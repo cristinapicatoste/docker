@@ -175,3 +175,11 @@ Los containers pueden comunicarse en los siguientes escenarios:
     - comunicaciones a otro container
 
 ![Image text](link github)
+
+`host.docker.internal` nos permite obtener un dominio que docker entiende con tal de conectarnos por ejemplo a una base de datos que está corriendo en nuestro local. Si la db está corriendo en otro container, host.docker.internal ya no sirve.
+
+`docker network NET_NAME` Primero hay que crear la network en la que se encontrarán los contenedores.
+
+`docker run ... --network NET_NAME` Comando para indicar el nombre de la network creada.
+
+Importante actualizar el dominio con el nombre del contenedor para que la network sepa dónde comunicarse.

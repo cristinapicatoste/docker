@@ -68,7 +68,9 @@ app.get('/people', async (req, res) => {
 });
 
 mongoose.connect(
-  'mongodb://localhost:27017/swfavorites',
+  'mongodb://172.17.0.2:27017/swfavorites', // ADRESSIP de la imagen de mongo
+  // 'mongodb://host.docker.interal:27017/swfavorites', 
+  //'mongodb://localhost:27017/swfavorites',
   { useNewUrlParser: true },
   (err) => {
     if (err) {
