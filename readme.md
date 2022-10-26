@@ -17,6 +17,8 @@ En el Dockerfile se indican los lenguajes y los comandos necesarios para levanta
 
 ` RUN ` intrucción para ejecutar comandos.
 
+` ENV ` instrucción para setear variables de entorno.
+
 ` EXPOSE ` para indicar el puerto en que corre el proyecto.
 
 ` CMD [ "node", "app.mjs" ] ` instrucción para levantar el proyecto. Última instrucción, solo debe haber un CMD por Dockerfile
@@ -122,7 +124,42 @@ Ej.:
 
 La extensión `:ro` asegura que esa carpeta solo sea de lectura (read only) y no se pueda sobreescribir. Sin embargo hay otras carpetas que si necesitan ser modificadas (temp y feedback). La carpeta feedback se ha creado como un volume con nombre y su ruta es más específica que /app, por lo tanto no se aplicará el :ro a esa ruta. Para asegurarnos que la ruta /app/temp se puede modificar y sobreescribe el bind mount, tendremos que añadir otro volume, anónimo para que se elimine al parar y borrar el contenedor (gracias al comando --rm).
 
-6. `.dockerignore``
+### 6. `.dockerignore``
 
 .dockerignore nos ayuda a indicarle a docker qué carpetas no debe copiar cuando cree la imagen, por ejemplo la carpeta node_modules si hemos ejecutado `npm i` en nuestro local.
 
+### 7. ENV and ARG
+
+#### ENV variables de entorno
+
+En Docker se pueden utilizar variables de entorno de dos formas: con una instrucción o con comandos.
+
+` ENV name_env value_env ` o `ENV PORT 80` Instrucción que se indica en el Dockerfile para declarar una variable de entorno y su valor. 
+
+` $NAVE_ENV ` o `EXPOSE $PORT` Usar las variables de entorno mediante `$`.
+
+` -env NAME_ENV=VALUE_ENV ` o ` -env PORT=8000 ` Comando que declara el nombre y el valor de una variable de entorno. 
+
+` --env-file PATH_ENV_DOC ` o ` --env-file ./.env ` Comando para 'importar' el archivo .env con todas las variables de entorno. 
+
+#### ARG argumentos
+
+Los argumentos permite dinamizar valores y evitar harcodearlos en el código, por ejemplo con el puerto. 
+
+` ARG name=value ` instrucción para crear un argumento.
+
+Se usa (llama) mediantel el símbolo $:
+
+`ARG PORT=8000 ` 
+
+`ENV PORT $DEFAULT_PORT`
+
+`EXPOSE $PORT`
+
+Los arg solo se pueden usar dentro del Dockerfile con todas las instrucciones excepto `CMD`. 
+
+Hay que tener en cuenta que cuando se modifica el valor del argumento, todas las instrucciones a continuación se vuelven a ejecutar ya que, crea un layer y cuando se identifica un cambio en cualquier layer, todas las instrucciones a continuación se vuelven a ejecutar.
+
+Se deben colo y el lugar (orden) donde se pone esta instrucción no es relevante.
+
+Gracias a los argumentos, se pueden crear varias imagenes sin necesidad de modificar el Dockferfile, solo añadiendo el valor del argumento de forma dinámica mediante el comando `--build-arg NAME_ARG=VALUE_ARG`.
