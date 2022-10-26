@@ -163,3 +163,15 @@ Hay que tener en cuenta que cuando se modifica el valor del argumento, todas las
 Se deben colo y el lugar (orden) donde se pone esta instrucción no es relevante.
 
 Gracias a los argumentos, se pueden crear varias imagenes sin necesidad de modificar el Dockferfile, solo añadiendo el valor del argumento de forma dinámica mediante el comando `--build-arg NAME_ARG=VALUE_ARG`.
+
+### 8. NETWORKS REQUESTS
+
+Los containers pueden comunicarse en los siguientes escenarios:
+
+    - hacer peticiones hhtp a otras APIs que están fuera del container (online)
+    
+    - peticiones a un servicio o base de datos que está corriendo en local
+
+    - comunicaciones a otro container
+
+![Image text](link github)
