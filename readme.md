@@ -17,6 +17,8 @@ En el Dockerfile se indican los lenguajes y los comandos necesarios para levanta
 
 ` RUN ` intrucción para ejecutar comandos.
 
+` ENV ` instrucción para setear variables de entorno.
+
 ` EXPOSE ` para indicar el puerto en que corre el proyecto.
 
 ` CMD [ "node", "app.mjs" ] ` instrucción para levantar el proyecto. Última instrucción, solo debe haber un CMD por Dockerfile
