@@ -122,7 +122,18 @@ Ej.:
 
 La extensión `:ro` asegura que esa carpeta solo sea de lectura (read only) y no se pueda sobreescribir. Sin embargo hay otras carpetas que si necesitan ser modificadas (temp y feedback). La carpeta feedback se ha creado como un volume con nombre y su ruta es más específica que /app, por lo tanto no se aplicará el :ro a esa ruta. Para asegurarnos que la ruta /app/temp se puede modificar y sobreescribe el bind mount, tendremos que añadir otro volume, anónimo para que se elimine al parar y borrar el contenedor (gracias al comando --rm).
 
-6. `.dockerignore``
+### 6. `.dockerignore``
 
 .dockerignore nos ayuda a indicarle a docker qué carpetas no debe copiar cuando cree la imagen, por ejemplo la carpeta node_modules si hemos ejecutado `npm i` en nuestro local.
 
+### 7. ENV and ARG
+
+En Docker se pueden utilizar variables de entorno de dos formas: con una instrucción o con comandos.
+
+` ENV name_env value_env ` o `ENV PORT 80` Instrucción que se indica en el Dockerfile para declarar una variable de entorno y su valor. 
+
+` $NAVE_ENV ` o `EXPOSE $PORT` Usar las variables de entorno mediante `$`.
+
+` -env NAME_ENV=VALUE_ENV ` o ` -env PORT=8000 ` Comando que declara el nombre y el valor de una variable de entorno. 
+
+` --env-file PATH_ENV_DOC ` o ` --env-file ./.env ` Comando para 'importar' el archivo .env con todas las variables de entorno. 
