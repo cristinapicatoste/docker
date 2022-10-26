@@ -65,24 +65,57 @@ En el Dockerfile se indican los lenguajes y los comandos necesarios para levanta
 
 Docker tiene varios sistemas de almacenaje de datos: volumes (gestionados por docker) and bind mounts (gestionados por developer).
 
-#### Volumes
+### 5. Volumes
 
-Pueden ser anónimos (instrucción `VOLUME [ "/path/path" ]`) o nombrados (comando -v al crear el container).
-Con los volumes, Docker crea una carpeta en nuestro local, pero no sabemos dónde, ya que solo hemos especificado la ruta en la que estará la carpeta dentro del container.
+Los volumes permiten persistir datos gracias a una carpeta que Docker crea en nuestro local en una ruta que nosotros desconocemos y a la cual no podemos acceder.
 
-Los volumes permiten persistir datos.
-Es una carpeta que docker genera dentro de nuestro local.
-Cuando se elimina el contenedor, se elimina dicha carpeta (si se ha creado con el comando --rm).
+#### Comands
 
-Los volumes pueden ser anónimos o se pueden nombrar `-v CONTAINER_NAME:/PATH_CONTAINER`
+` docker volume ls ` lista los volumes.
 
-Para mantener el volume tras eliminar un container,
-hay que correr el siguiente comando `-v CONTAINER_NAME:/PATH_CONTAINER`
+` docker volume prune ` Elimina todos los volumes anónimos.
+
+` docker volume rm VOL_NAME ` Elimina los volumes anónimos especificados.
+
+` -v CONTAINER_NAME:/PATH_CONTAINER ` Crea un volume con el nombre que le especificamos.
+
+Tipos de volumes:
+
+- Anónimos (instrucción `VOLUME [ "/PATH/PATH" ]` o comando ` -v /PATH`). Docker los nombra con un hash y solo existe mientras el contenedor exista (si ha sido creado con el comando `--rm`), en cuanto este se elimina, el volume también se borra.
+
+- Nombrados (comando `-v CONTAINER_NAME:/PATH_CONTAINER` al crear el container). Con este tipo de volumes los datos persisten tras `-rm` el contenedor, si se crea otro container con el mismo path especificado con el comando `-v` los datos se mantienen, aunque no se pueden editar. 
+
+    Ej.:
+    ```docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback feedback-node:volume```
+
+### 5. Bind Mounts
+
+El bind mount es una conexión del container a una carpeta de nuestro local.
+
+Soluciona el siguiente problema: los cambios que se realizan en el código no se reflejan automáticamente en el contenedor que está corriendo a no ser que reconstruyamos la imagen.
+
+La principal diferencia con los volumes es que el developer define la ruta local y que los datos almacenados pueden ser editados.
+
+IMPORTANT!
+Docker debe tener acceso a la carpeta usada como bind mount.
+Se comprueva en la app de ` docker > preferencias > recursos > archivos compartidos `
+
+#### Comands
+
+` -v "ABSOLUTE_PATH:CONTAINER_PATH" ` Se indica la ruta de la carpeta que estamos copiando para construir la imagen (` botón derecho > copy path `). Es aconsejable envolver las rutas entre " " por si contiene algún carácter especial o algún espacio que pueda romper el comando.
+
+El comando monta toda la carpeta como un volume dentro de la carpeta especificada del contenedor.
+
+*Fix error con express:* 
+
+Al crear el bind mount, se borra el código ejecutado por la imagen de Docker y por lo tanto la carpeta de node_modules se elimina y no se puede levantar el proyecto porque le faltan las dependencias.
+
+Para evitar o solucionarlo, creamos otro volume (anónimo en este caso) para que la carpeta node_modules no se elimine.
+
+El comando ` -v /app/node_modules` es equivalente a la instrucción `VOLUME ["/app/node_modules"]`, pero en este caso habría que reconstruir la imagen y el container cada vez.
+
+Gracias a este comando, se le indica a Docker que esta carpeta no debe ser sobreescrita en caso de tener un bind mount.
 
 Ej.:
-
-```docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback feedback-node:volume```
-
-Fix error con express:
 
 ``` docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback -v "/Users/bcome/Desktop/docker-course/5_data-volumes:/app" -v /app/node_modules feedback-node:volume ```
