@@ -168,11 +168,11 @@ Gracias a los argumentos, se pueden crear varias imagenes sin necesidad de modif
 
 Los containers pueden comunicarse en los siguientes escenarios:
 
-    - hacer peticiones hhtp a otras APIs que están fuera del container (online)
+· hacer peticiones hhtp a otras APIs que están fuera del container (online). Se usa el dominio de la API
     
-    - peticiones a un servicio o base de datos que está corriendo en local
+· peticiones a un servicio o base de datos que está corriendo en local. Se utiliza `host.docker.internal` como dominio 
 
-    - comunicaciones a otro container
+· comunicaciones a otro container, se puede utilizar la `IPADRESS` del contenedor o crear una network
 
 ![Image text](link github)
 
