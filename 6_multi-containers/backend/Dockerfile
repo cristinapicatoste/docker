@@ -16,6 +16,6 @@ ENV MONGODB_PASSWORD=secret
 
 EXPOSE 80
 
-CMD ["nodemon", "start"]
+CMD ["npm", "start"]
 
 
