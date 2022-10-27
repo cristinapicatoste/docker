@@ -168,10 +168,18 @@ Gracias a los argumentos, se pueden crear varias imagenes sin necesidad de modif
 
 Los containers pueden comunicarse en los siguientes escenarios:
 
-    - hacer peticiones hhtp a otras APIs que están fuera del container (online)
+· hacer peticiones hhtp a otras APIs que están fuera del container (online). Se usa el dominio de la API
     
-    - peticiones a un servicio o base de datos que está corriendo en local
+· peticiones a un servicio o base de datos que está corriendo en local. Se utiliza `host.docker.internal` como dominio 
 
-    - comunicaciones a otro container
+· comunicaciones a otro container, se puede utilizar la `IPADRESS` del contenedor o crear una network
 
 ![Image text](link github)
+
+`host.docker.internal` nos permite obtener un dominio que docker entiende con tal de conectarnos por ejemplo a una base de datos que está corriendo en nuestro local. Si la db está corriendo en otro container, host.docker.internal ya no sirve.
+
+`docker network NET_NAME` Primero hay que crear la network en la que se encontrarán los contenedores.
+
+`docker run ... --network NET_NAME` Comando para indicar el nombre de la network creada.
+
+Importante actualizar el dominio con el nombre del contenedor para que la network sepa dónde comunicarse.
