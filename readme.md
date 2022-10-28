@@ -1,13 +1,13 @@
 # DOCKER & KUBERNETES
 
-## DOCKER
+# DOCKER
 
-### 1. Images
+## 1. Images
 
 La image se crea a partir del contenido del Dockerfile.
 En el Dockerfile se indican los lenguajes y los comandos necesarios para levantar el proyecto. De este modo no hace falta instalarse las dependencias en la máquina local, sino que se corren en el contenedor de Docker.
 
-#### Principales instrucciones
+### Principales instrucciones
 
 ` FROM ` indica la imagen padre sobre la que construiremos el proyecto (Node, Python, Java...).
 
@@ -23,7 +23,7 @@ En el Dockerfile se indican los lenguajes y los comandos necesarios para levanta
 
 ` CMD [ "node", "app.mjs" ] ` instrucción para levantar el proyecto. Última instrucción, solo debe haber un CMD por Dockerfile
 
-#### Commands
+### Commands
 
 ` docker build . ` Crea una imagen basada en el Dockerfile sin nombre.
 
@@ -35,9 +35,9 @@ En el Dockerfile se indican los lenguajes y los comandos necesarios para levanta
 
 ` docker image prune ` Eliminar todas las images huérfanas, es decir que no están siendo ejecutadas por ningún container.
 
-### 2. Containers
+## 2. Containers
 
-#### Commands
+### Commands
 
 ` docker run IMAGE_ID ` o ` docker run 652348246475 ` Crea el contenedor basado en la imagen indicada (id o nombre). En este caso no se indica el puerto, solo usar para proyectos que no lo necesiten o no estén usando puerto.
 
@@ -57,21 +57,21 @@ En el Dockerfile se indican los lenguajes y los comandos necesarios para levanta
 
 ` docker rm CONTAINER_NAME_OR_ID ` elimina el contenedor especificado, debe haber sido parado previamente. Se pueden eliminar varios contenedores a la vez separandolos por un espacio.
 
-### 3. Share images
+## 3. Share images
 
     - Docker Hub
 
     - Private Registry
 
-### 4. Volumes & Bind Mount
+## 4. Volumes & Bind Mount
 
 Docker tiene varios sistemas de almacenaje de datos: volumes (gestionados por docker) and bind mounts (gestionados por developer).
 
-### 5. Volumes
+## 5. Volumes
 
 Los volumes permiten persistir datos gracias a una carpeta que Docker crea en nuestro local en una ruta que nosotros desconocemos y a la cual no podemos acceder.
 
-#### Comands
+### Comands
 
 ` docker volume ls ` lista los volumes.
 
@@ -90,7 +90,7 @@ Tipos de volumes:
     Ej.:
     ```docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback feedback-node:volume```
 
-### 5. Bind Mounts
+## 5. Bind Mounts
 
 El bind mount es una conexión del container a una carpeta de nuestro local.
 
@@ -102,7 +102,7 @@ IMPORTANT!
 Docker debe tener acceso a la carpeta usada como bind mount.
 Se comprueva en la app de ` docker > preferencias > recursos > archivos compartidos `
 
-#### Comands
+### Comands
 
 ` -v "ABSOLUTE_PATH:CONTAINER_PATH" ` Se indica la ruta de la carpeta que estamos copiando para construir la imagen (` botón derecho > copy path `). Es aconsejable envolver las rutas entre " " por si contiene algún carácter especial o algún espacio que pueda romper el comando.
 
@@ -124,13 +124,13 @@ Ej.:
 
 La extensión `:ro` asegura que esa carpeta solo sea de lectura (read only) y no se pueda sobreescribir. Sin embargo hay otras carpetas que si necesitan ser modificadas (temp y feedback). La carpeta feedback se ha creado como un volume con nombre y su ruta es más específica que /app, por lo tanto no se aplicará el :ro a esa ruta. Para asegurarnos que la ruta /app/temp se puede modificar y sobreescribe el bind mount, tendremos que añadir otro volume, anónimo para que se elimine al parar y borrar el contenedor (gracias al comando --rm).
 
-### 6. `.dockerignore``
+## 6. `.dockerignore``
 
 .dockerignore nos ayuda a indicarle a docker qué carpetas no debe copiar cuando cree la imagen, por ejemplo la carpeta node_modules si hemos ejecutado `npm i` en nuestro local.
 
-### 7. ENV and ARG
+## 7. ENV and ARG
 
-#### ENV variables de entorno
+### ENV variables de entorno
 
 En Docker se pueden utilizar variables de entorno de dos formas: con una instrucción o con comandos.
 
@@ -142,7 +142,7 @@ En Docker se pueden utilizar variables de entorno de dos formas: con una instruc
 
 ` --env-file PATH_ENV_DOC ` o ` --env-file ./.env ` Comando para 'importar' el archivo .env con todas las variables de entorno. 
 
-#### ARG argumentos
+### ARG argumentos
 
 Los argumentos permite dinamizar valores y evitar harcodearlos en el código, por ejemplo con el puerto. 
 
@@ -164,7 +164,7 @@ Se deben colo y el lugar (orden) donde se pone esta instrucción no es relevante
 
 Gracias a los argumentos, se pueden crear varias imagenes sin necesidad de modificar el Dockferfile, solo añadiendo el valor del argumento de forma dinámica mediante el comando `--build-arg NAME_ARG=VALUE_ARG`.
 
-### 8. NETWORKS REQUESTS
+## 8. NETWORKS REQUESTS
 
 Los containers pueden comunicarse en los siguientes escenarios:
 
@@ -183,3 +183,10 @@ Los containers pueden comunicarse en los siguientes escenarios:
 `docker run ... --network NET_NAME` Comando para indicar el nombre de la network creada.
 
 Importante actualizar el dominio con el nombre del contenedor para que la network sepa dónde comunicarse.
+
+## 9. CONTAINER UTILITIES
+
+## 10. DOCKER COMPOSE
+
+## 11. DEPLOY DOCKER
+
