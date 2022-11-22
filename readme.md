@@ -190,3 +190,54 @@ Importante actualizar el dominio con el nombre del contenedor para que la networ
 
 ## 11. DEPLOY DOCKER
 
+# KUBERNETES
+
+## 1. CONCETPS AND ARCHITECTURE
+
+### POD (container)
+
+Equivalente a un contenedor en docker. El pod ejecuta el contenedor y el pod corre en un working node.
+
+### PROXY / CONFIG 
+
+Kubernetes también necesita un proxy para poder funcionar y poder comunicarse con internet y que éste pueda comunicarse con la aplicación.
+
+### WORKING NODE (nodos)
+
+Son máquinas virtuales (con su CPU y su memoria) que ejecutan el contenedor. Los nodos puenden ejecutar (contener) más de un pod y que cada uno haga una función totalmente distinta e independiente el uno del otro. El nodo es la representación de un ordenador.
+
+Es necesario instalar Docker en el nodo con tal de poder ejecutar los pods (contenedores).
+
+Así mismo, es necesario instalar kubelet, que permite la comunicación entre los nodos y el master node.
+
+También es necesario instalar el kube-proxy, que getiona el tráfico.
+
+Los proveedores de cloud como AWS se ocupan de instalar las instancias de estos softwares para que los nodos funcionen.
+
+Para grandes aplicaciones tendremos más de un nodo con su pod y su proxy. Del mismo modo se pueden necesitar varios servidores para gestionar el tráfico entrante y distribuirlo, para levantar nuevos contenedores si alguno falla.
+
+### MASTER NODE
+
+Este nodo es el encargado de gestionar todos los nodos (con sus pods/containers) con el "CONTROL PLANE". En Kubernetes no interactuamos directamente los contenedores, sino que configuramos el resultado final deseado desde el panel de control del Master Node.
+
+API server. Es el software o servicio que permite la comunicación entre el Master Node y kubeletes (software que permite la comunicación con Master Node).
+
+Scheduler. Responsable de controlar los pods, selecionar los nodos para correro los pods, gestionar la caida de los contenedores, gestionar el aumento o disminución de tráfico.
+
+Kube-Controller-Manager. Servicio que controla los Working Nodes y vigila que haya el número correcto de pods ejecutándose.
+
+Cloud-Controller-Manager. Servicio similar a Kube-Controller-Manager, pero que se comunica con el proveedor de cloud para que sepa qué hacer. Es decir, sabe cómo interactuar con los recursos del proveedor cloud. Traduce las instrucciones a AWS, Azure...
+
+### CLUSTER
+
+Es el conjunto de todas las piezas anteriores (Master Node y Worker Nodes (que contiene a su vez los pods y los proxys)), y que actúa una network que conecta todos los elementos. El Cluster se puede conectar y comunicar con las APIs de los proveedores de Cloud para replicar la estructura definida en el cluster.
+
+Es el conjunto de todas las piezas anteriores (Master Node y Worker Nodes (que contiene a su vez los pods y los proxys)), y que actúa una network que conecta todos los elementos. El Cluster se puede conectar y comunicar con las APIs de los proveedores de Cloud para replicar la estructura definida en el cluster.
+
+
+Para que Kubernetes funcione tendremos que crear el Cluster con las instancias de los nodos, setear la API server, kubelet y otros servicios/softwares en los nodos, y además crear otras fuentes o fuentes necesarias para el funcionamiento del cluster (load balancer, filesystems...).
+
+
+
+
+ 
